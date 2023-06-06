@@ -7,10 +7,10 @@ import type { ChatResponseChunk } from '@/utils/constants';
 import { HttpHeaderJson, HttpMethod, HttpStatus } from '@/utils/constants';
 import { env } from '@/utils/env';
 import { getApiKey } from '@/utils/getApiKey';
+import {bootstrap} from 'global-agent-ts';
+bootstrap();
 
-export const config = {
-  runtime: 'edge',
-};
+export const runtime = 'nodejs'
 
 export async function POST(req: NextRequest) {
   if (env.NODE_ENV === 'development') {
