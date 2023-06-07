@@ -1,10 +1,7 @@
-import type {ChatRequest, ModelsResponse} from './constants';
-import {HttpHeaderJson, HttpMethod} from './constants';
-import {ResError} from './error';
-import {stream2string} from './stream';
-import {bootstrap} from 'global-agent-ts';
-
-bootstrap();
+import type { ChatRequest, ModelsResponse } from './constants';
+import { HttpHeaderJson, HttpMethod } from './constants';
+import { ResError } from './error';
+import { stream2string } from './stream';
 
 export const runtime = 'nodejs'
 
@@ -22,27 +19,19 @@ export const fetchApiChat = async ({
    */
   onMessage?: (content: string) => void;
 } & Partial<ChatRequest>) => {
-    try {
-        const fetchResult = await fetch('/api/chat', {
-            method: HttpMethod.POST,
-            headers: HttpHeaderJson,
-            body: JSON.stringify(chatRequest),
-        });
+  const fetchResult = await fetch('/api/chat', {
+    method: HttpMethod.POST,
+    headers: HttpHeaderJson,
+    body: JSON.stringify(chatRequest),
+  });
 
-        // 如果返回错误，则直接抛出错误
-        if (!fetchResult.ok) {
-            throw await getError(fetchResult);
-        }
+  // 如果返回错误，则直接抛出错误
+  if (!fetchResult.ok) {
+    throw await getError(fetchResult);
+  }
 
-        // 使用 stream2string 来读取内容
-        return await stream2string(fetchResult.body, onMessage);
-    }catch (e) {
-        console.error("*******************************************************")
-        console.error("api fetchApiChat:")
-        console.error(e)
-        console.error("*******************************************************")
-    }
-
+  // 使用 stream2string 来读取内容
+  return await stream2string(fetchResult.body, onMessage);
 };
 
 /**
@@ -50,25 +39,17 @@ export const fetchApiChat = async ({
  * 获取可用的模型列表
  */
 export const fetchApiModels = async (): Promise<ModelsResponse> => {
-    try {
-        const fetchResult = await fetch('/api/models', {
-            method: HttpMethod.GET,
-            headers: HttpHeaderJson,
-        });
+  const fetchResult = await fetch('/api/models', {
+    method: HttpMethod.GET,
+    headers: HttpHeaderJson,
+  });
 
-        // 如果返回错误，则直接抛出错误
-        if (!fetchResult.ok) {
-            throw await getError(fetchResult);
-        }
+  // 如果返回错误，则直接抛出错误
+  if (!fetchResult.ok) {
+    throw await getError(fetchResult);
+  }
 
-        return await fetchResult.json();
-    }catch (e) {
-        console.error("*******************************************************")
-        console.error("api fetchApiModels:")
-        console.error(e)
-        console.error("*******************************************************")
-    }
-
+  return await fetchResult.json();
 };
 
 /**
@@ -84,12 +65,7 @@ async function getError(fetchResult: Response) {
     let fetchResultJson = await fetchResult.json();
     // 使用 resJson.error 覆盖 error
     Object.assign(error, fetchResultJson, fetchResultJson.error);
-  } catch (e) {
-      console.error("*******************************************************")
-      console.error("api getError:")
-      console.error(e)
-      console.error("*******************************************************")
-  }
+  } catch (e) {}
 
   return error;
 }
