@@ -16,6 +16,11 @@ import { sleep } from '@/utils/sleep';
 import { MenuContext, MenuKey } from './MenuContext';
 import type { SettingsState } from './SettingsContext';
 import { SettingsContext } from './SettingsContext';
+import {bootstrap} from 'global-agent-ts';
+
+bootstrap();
+
+export const runtime = 'nodejs'
 
 /**
  * 聊天记录
