@@ -6,6 +6,8 @@ import {bootstrap} from 'global-agent-ts';
 
 bootstrap();
 
+export const runtime = 'nodejs'
+
 /**
  * 请求 /api/chat 接口
  * 参数和 OpenAI 官方的接口参数一致，apiKey 在服务端自动添加
